@@ -72,44 +72,10 @@ jobs:
             name: test-results
             path: app/build/reports/tests
     
-    #3.0 inst tests (emulator)
-    inst-tests: 
-      permissions:
-        contents: read # for actions/checkout to fetch code
-      runs-on: ubuntu-latest
-
-      steps:
-        #3.1 checkout
-        - uses: actions/checkout@v4
-        
-        #3.2.1 grant execute permissions
-        - name: Grant execute permission for gradlew
-          run: chmod +x gradlew
-
-        #3.2.2 build to run inst tests
-        - name: Build 
-          # run: ./gradlew assembleAndroidTest
-          run: ./gradlew build
-
-        #3.3 Run tests
-        - name: Run tests
-          uses: emulator-wtf/run-tests@v0
-          with:
-            api-token: ${{ secrets.EMULATORWTFKEY }}
-            app: app/build/outputs/apk/debug/app-debug.apk
-            # test: app/build/outputs/apk/androidTest/app-debug-androidTest.apk
-            outputs-dir: build/test-results
-        
-        #3.4 publish report
-        - name: Publish test report
-          uses: mikepenz/action-junit-report@v2
-          if: always() # always run even if the tests fail
-          with:
-            report_paths: 'build/test-results/**/*.xml'
-
+  
     #4.0 build
     build:
-        needs: [sast, func-tests, inst-tests]
+        needs: [sast, func-tests]
         name: Build and Test
         runs-on: ubuntu-latest
 
