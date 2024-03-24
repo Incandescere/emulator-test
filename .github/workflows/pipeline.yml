@@ -93,7 +93,7 @@ jobs:
           run: ./gradlew assembleDebug assembleAndroidTest
 
         - name: check
-          run: ls -lrt app/build/outputs/apk
+          run: ls -lrt app/build/outputs/apk/androidTest
 
         - name: Run tests
           uses: emulator-wtf/run-tests@v0
