@@ -82,21 +82,25 @@ jobs:
         #3.1 checkout
         - uses: actions/checkout@v4
         
-        #3.2 run inst tests
-        - name: Run connected tests
-          uses: ReactiveCircus/android-emulator-runner@v2
-          with:
-            api-level: 34
-            target: google_apis
-            arch: x86_64
-            script: ./gradlew connectedCheck
+        #3.2 build to run inst tests
+        - name: Build 
+          run: ./gradlew assembleDebug assembleAndroidTest
 
-        #3.3 upload inst test result
-        - name: Upload Test Results
-          uses: actions/upload-artifact@v3
+        #3.3 Run tests
+        - name: Run tests
+          uses: emulator-wtf/run-tests@v0
           with:
-            name: test-results
-            path: app/build/reports/tests
+            api-token: ${{ secrets.EMULATORWTFKEY }}
+            app: app/build/outputs/apk/debug/app-debug.apk
+            test: app/build/outputs/apk/androidTest/app-debug-androidTest.apk
+            outputs-dir: build/test-results
+        
+        #3.4 publish report
+        - name: Publish test report
+          uses: mikepenz/action-junit-report@v2
+          if: always() # always run even if the tests fail
+          with:
+            report_paths: 'build/test-results/**/*.xml'
 
     #4.0 build
     build:
