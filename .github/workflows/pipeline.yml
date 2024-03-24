@@ -71,11 +71,34 @@ jobs:
           with:
             name: test-results
             path: app/build/reports/tests
-    
+
+    inst-tests:
+        runs-on: ubuntu-20.04
+
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: Build app
+          # run: ./gradlew assembleDebug assembleAndroidTest
+          run: ./gradlew build
+
+        - name: Run tests
+          uses: emulator-wtf/run-tests@v0
+          with:
+            api-token: ${{ secrets.EMULATORWTFKEY }}
+            app: app/build/outputs/apk/debug/app-debug.apk
+            # test: app/build/outputs/apk/androidTest/app-debug-androidTest.apk
+            outputs-dir: build/test-results
+        - name: Publish test report
+          uses: mikepenz/action-junit-report@v2
+          if: always() # always run even if the tests fail
+          with:
+            report_paths: 'build/test-results/**/*.xml'
+
   
     #4.0 build
     build:
-        needs: [sast, func-tests]
+        needs: [sast, func-tests, inst-tests]
         name: Build and Test
         runs-on: ubuntu-latest
 
