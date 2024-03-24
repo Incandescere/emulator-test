@@ -82,6 +82,9 @@ jobs:
         #3.1 checkout
         - uses: actions/checkout@v4
         
+        - name: Grant execute permission for gradlew
+          run: chmod +x gradlew
+
         #3.2 build to run inst tests
         - name: Build 
           run: ./gradlew assembleDebug assembleAndroidTest
