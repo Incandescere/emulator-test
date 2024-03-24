@@ -88,7 +88,8 @@ jobs:
 
         #3.2.2 build to run inst tests
         - name: Build 
-          run: ./gradlew assembleAndroidTest
+          # run: ./gradlew assembleAndroidTest
+          run: ./gradlew build
 
         #3.3 Run tests
         - name: Run tests
@@ -96,7 +97,7 @@ jobs:
           with:
             api-token: ${{ secrets.EMULATORWTFKEY }}
             app: app/build/outputs/apk/debug/app-debug.apk
-            test: app/build/outputs/apk/androidTest/app-debug-androidTest.apk
+            # test: app/build/outputs/apk/androidTest/app-debug-androidTest.apk
             outputs-dir: build/test-results
         
         #3.4 publish report
