@@ -8,6 +8,18 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="insertAndGetInventory()">
+        <State />
+      </entry>
+      <entry key="testDeleteInventory()">
+        <State />
+      </entry>
+      <entry key="testGetAllInventoriesByUserId()">
+        <State />
+      </entry>
+      <entry key="testUpdateInventory()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
